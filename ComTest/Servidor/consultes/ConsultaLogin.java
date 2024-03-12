@@ -1,15 +1,29 @@
 package org.example.Servidor.consultes;
 
-import java.sql.Connection;
+import java.sql.*;
 
 public class ConsultaLogin {
-
-    String consultaLoginst = "SELECT \"Usuaris\".\"id\", \"Usuaris\".\"nomUsuari\", \"Usuaris\".\"passUsuari\",\"tipusUsuari\".\"tipus\""+
-    "FROM \"fithubSchema\".\"Usuaris\""+
-    "INNER JOIN \"fithubSchema\".\"tipusUsuari\" ON \"Usuaris\".\"tipusUsuari\" = \"tipusUsuari\".id;\"";
-
     Connection con;
-    public ConsultaLogin(Connection con) {
+    String msg;
+    public ConsultaLogin(Connection con, String msg) {
         this.con = con;
+        this.msg = msg;
+    }
+
+    public String consultaLoginSQL() throws SQLException {
+        String [] valorsPeticio = this.msg.split(",");
+        String consultaNomLogin = "SELECT \"Usuaris\".\"id\", \"Usuaris\".\"nomUsuari\", \"Usuaris\".\"passUsuari\",\"tipusUsuari\".\"tipus\",\"Usuaris\".\"correuUsuari\""+
+                "FROM \"fithubSchema\".\"Usuaris\" INNER JOIN \"fithubSchema\".\"tipusUsuari\" ON \"Usuaris\".\"tipusUsuari\" = \"tipusUsuari\".id;\""+
+                "WHERE \"Usuaris\".\"nomUsuari\" = "+ valorsPeticio[1];
+
+        Statement statement = con.createStatement();
+        ResultSet resultat = statement.executeQuery(consultaNomLogin);
+
+        if(resultat.next()){
+            if(resultat.getString(3).equals(valorsPeticio[2])){
+                return resultat.getString(1)+","+resultat.getString(4)+","+resultat.getString(2);
+            }
+        }
+        return "-1";
     }
 }

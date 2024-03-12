@@ -33,33 +33,29 @@ public class MainServer {
 
             Statement statement = con.createStatement();
 
-            ResultSet rs = statement.executeQuery("SELECT * FROM \"fithubSchema\".\"Usuaris\"");
+            //ResultSet rs = statement.executeQuery("SELECT * FROM \"fithubSchema\".\"Usuaris\"");
 
             System.out.println("Connexio aconseguida.");
-            while(rs.next()){
-
+            /*while(rs.next()){
                 System.out.println(rs.getString("passUsuari"));
                 System.out.println(rs.getString(1));
 
-
-            }
-
+            }*/
 
             InetAddress direccionIP = InetAddress.getByName(ip); // Cambia a la IP que deseas usar
             InetSocketAddress direccion = new InetSocketAddress(direccionIP, puerto);
             // Crea el socket del servidor vinculándolo a la dirección y puerto especificados
-           /* ServerSocket server = new ServerSocket();
+            ServerSocket server = new ServerSocket();
             server.bind(direccion);
-            int i = 0;
 
             while (true) {
                 System.out.println("Esperant client...");
                 //Accepta conexio del client
                 Socket socket = server.accept();
-                System.out.println("Client connectat " + i);
-                i++;
-                new ClientThread(socket).start();  // Inicia un fil per a la conexio del client
-            }*/
+                System.out.println("Client connectat " + socket.getInetAddress().toString());
+
+                new ClientThread(socket, con).start();  // Inicia un fil per a la conexio del client
+            }
 
         } catch (IOException ex) {
             ex.printStackTrace();
