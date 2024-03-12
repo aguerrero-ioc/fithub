@@ -42,6 +42,7 @@ class ClientThread extends Thread {
                     //Invoca la consulta per fer login
                     case "login":
                         rsp = new ConsultaLogin(con, msg).consultaLoginSQL();
+                        break;
                     default:
                         rsp = "-1";
                 }
