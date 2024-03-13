@@ -29,9 +29,6 @@ class ClientThread extends Thread {
         String msg;
         String rsp;
 
-        // Envia missatge de conectat al client
-        out.println("Client connectat");
-
         // Llegeix missatge enviat pel client
         if (in.hasNextLine()) {
             msg = in.nextLine();

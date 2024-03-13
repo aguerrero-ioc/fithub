@@ -12,9 +12,9 @@ public class ConsultaLogin {
 
     public String consultaLoginSQL() throws SQLException {
         String [] valorsPeticio = this.msg.split(",");
-        String consultaNomLogin = "SELECT \"Usuaris\".\"id\", \"Usuaris\".\"nomUsuari\", \"Usuaris\".\"passUsuari\",\"tipusUsuari\".\"tipus\",\"Usuaris\".\"correuUsuari\""+
-                "FROM \"fithubSchema\".\"Usuaris\" INNER JOIN \"fithubSchema\".\"tipusUsuari\" ON \"Usuaris\".\"tipusUsuari\" = \"tipusUsuari\".id;\""+
-                "WHERE \"Usuaris\".\"nomUsuari\" = "+ valorsPeticio[1];
+        String consultaNomLogin = "SELECT \"Usuaris\".\"id\", \"Usuaris\".\"nomUsuari\", \"Usuaris\".\"passUsuari\",\"tipusUsuari\".\"tipus\",\"Usuaris\".\"correuUsuari\" "+
+                "FROM \"fithubSchema\".\"Usuaris\" INNER JOIN \"fithubSchema\".\"tipusUsuari\" ON \"Usuaris\".\"tipusUsuari\" = \"tipusUsuari\".\"id\" "+
+                "WHERE \"Usuaris\".\"correuUsuari\" = '"+ valorsPeticio[1]+"'";
 
         Statement statement = con.createStatement();
         ResultSet resultat = statement.executeQuery(consultaNomLogin);
