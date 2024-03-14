@@ -17,21 +17,26 @@ import java.util.Scanner;
 
 public class MainServer {
 
-    static int puerto = 8080;
-    static String ip = "127.0.0.1";
+    static int port = 8080;
+    static String ip = "192.168.0.47";
 
     private static final String url = "jdbc:postgresql://localhost:5432/FitHub";
     static String bbddUsuari = "postgres";
     static String bbddPass = "ioc";
     static Connection con;
 
+    /**
+     * Aquest es el métode principal del servidor de l'aplicació,
+     * rep les peticions del client i les envia cap a la classe que gestiona el tipus de peticio rebuda
+     * @param args
+     */
     public static void main(String[] args) {
         try {
             Class.forName("org.postgresql.Driver");
 
             con = DriverManager.getConnection(url,bbddUsuari,bbddPass);
 
-            Statement statement = con.createStatement();
+
 
             //ResultSet rs = statement.executeQuery("SELECT * FROM \"fithubSchema\".\"Usuaris\"");
 
@@ -43,7 +48,7 @@ public class MainServer {
             }*/
 
             InetAddress direccionIP = InetAddress.getByName(ip); // Cambia a la IP que deseas usar
-            InetSocketAddress direccion = new InetSocketAddress(direccionIP, puerto);
+            InetSocketAddress direccion = new InetSocketAddress(direccionIP, port);
             // Crea el socket del servidor vinculándolo a la dirección y puerto especificados
             ServerSocket server = new ServerSocket();
             server.bind(direccion);

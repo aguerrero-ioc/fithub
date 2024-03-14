@@ -16,6 +16,14 @@ class ClientThread extends Thread {
 
     Connection con;
 
+    /**
+     * Es la classe encarregada de gestionar les peticions del client
+     * i distribuir-les a les diferents classes en funció del tipus de petició que es tracti.
+     *
+     * @param client El socket creat a partir de la petició rebuda per part del client
+     * @param con La connexió amb la base de dades
+     * @throws IOException
+     */
     public ClientThread(Socket client, Connection con) throws IOException {
         this.client = client;
         this.in = new Scanner(client.getInputStream());
@@ -25,31 +33,32 @@ class ClientThread extends Thread {
 
     @Override
     public void run() {
-        //Missatge d'intercanvi amb el client
-        String msg;
-        String rsp;
+        String msg, rsp;
 
-        // Llegeix missatge enviat pel client
+        out.println("Client connectat");
+
+        // Si el client envia un missatge, el guarda a la variable
         if (in.hasNextLine()) {
             msg = in.nextLine();
-
+            System.out.println(msg);
+            //Com coneixem el format del missatge que ens enviara el client, el dividim per agafar les parts que necessitem
             String[] msgparts = msg.split(",");
             try {
                 switch (msgparts[0]) {
-                    //Invoca la consulta per fer login
+                    //Crida la consulta per fer login
                     case "login":
                         rsp = new ConsultaLogin(con, msg).consultaLoginSQL();
                         break;
                     default:
                         rsp = "-1";
                 }
-                // Retorna resposta
+                // Envia al client la resposta obtinguda
                 out.println(rsp);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
 
-            // Tanca la conexio
+            // Es tanca la connexió
             try {
                 client.close();
             } catch (IOException e) {
